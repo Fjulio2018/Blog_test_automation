@@ -26,7 +26,7 @@ describe('Validação do campo de Busca', () => {
     homePage.realizaPesquisavazia();
     homePage.verificarResultadosvazio();
     homePage.verificarSugestaoPg1();
-    homePage.verificarSugestaoPg1();
+    
 
 
   });
