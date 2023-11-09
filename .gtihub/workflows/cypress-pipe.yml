@@ -2,7 +2,7 @@ name: Run Auto Test
 
 on: 
   pull_request:
-    branches: [main]  
+    branches: [master]  
 
 
 jobs:
