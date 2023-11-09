@@ -71,7 +71,10 @@ describe('Validação do campo de Busca', () => {
   });
 
 
-  it('Validação de pesquisa com termos de pesquisa avançada', () => {
+  // Cenário será avaliado pelo PIO para melhor detalhamento da pesquisa e das validações
+
+
+  it.skip('Validação de pesquisa com termos de pesquisa avançada', () => {
     const termoPesquisa = 'TED AND PIX';
 
 

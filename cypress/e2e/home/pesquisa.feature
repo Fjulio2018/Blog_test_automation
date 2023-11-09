@@ -38,8 +38,13 @@ Funcionalidade: Validação do campo de Busca
     E  realizo uma pesquisa por "Tecnologia IR Pix"
     Então  vejo os resultados relacionados a "Tecnologia IR Pix"
 
+
+    // Cenário separado para validação do PIO
+
   Cenário: Validação de pesquisa com termos de pesquisa avançada
     Dado que estou na página inicial
     Quando  acesso o campo de pesquisa
     E  realizo uma pesquisa por "TED AND PIX"
-    Então  vejo os resultados relacionados a "TED AND PIX"
+    Então  vejo os resultados relacionados a TED e PIX no mesmo artigo
+    Mas se realizo uma pesquisa por "TED OR PIX"
+    Então  vejo os resultados relacionados a TED ou resultados relacionadosa  PIX nos artigos
