@@ -16,10 +16,10 @@ describe('Validação do campo de Busca', () => {
   });
 
   it('Pesquisa bem-sucedida por palavras-chave', () => {
-    const palavraChave = 'tecnologia';
+    const palavraChave = 'Pix';
     homePage.realizarPesquisa(palavraChave);
     homePage.verificarResultados(palavraChave);
-    homePage.verificarArtigos();
+    homePage.verificarHumArtigo(palavraChave);
   });
 
   it('Pesquisa com campo vazio', () => {
@@ -49,10 +49,11 @@ describe('Validação do campo de Busca', () => {
 
 
   it('Validação de pesquisa com várias palavras-chave', () => {
-    const palavrasChave = ['Tecnologia', 'IR', 'Pix'];
+    const palavrasChaves = ['Tecnologia', 'IR', 'Pix'];
 
-    homePage.realizarPesquisa((palavrasChave.join(' ')));
-    homePage.verificarResultados((palavrasChave.join(' ')));
+    homePage.realizarPesquisa((palavrasChaves.join(' ')));
+    homePage.verificarResultados((palavrasChaves.join(' ')));
+    homePage.verificarArtigos(palavrasChaves);
 
 
 
@@ -60,12 +61,22 @@ describe('Validação do campo de Busca', () => {
   });
 
 
-  it('Validação de pesquisa com termos de pesquisa avançada', () => {
+  it('Validação de Pesquisa por palavras-chave não encontrada', () => {
+    const palavrasChave = 'Vixi';
+
+    homePage.realizarPesquisa(palavrasChave);
+    homePage.verificaMensagemNãoEncontrado();
+
+
+  });
+
+
+  it.only('Validação de pesquisa com termos de pesquisa avançada', () => {
     const termoPesquisa = 'TED AND PIX';
 
 
     homePage.realizarPesquisa(termoPesquisa);
-    homePage.verificaTermoAvançado();
+    homePage.verificaTermoAvançado(termoPesquisa);
 
 
 

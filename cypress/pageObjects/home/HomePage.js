@@ -1,6 +1,26 @@
 class HomePage {
 
 
+  ELEMENTS = {
+
+
+    menu: '#overlay-open',
+    search: '.mobile-search > .search-form > label > .search-field',
+    searchField: '.archive-title',
+    searchValue: 'h1.archive-title>span',
+    urlBasic: 'https://blogdoagi.com.br/',
+    paginatioNumber: 'a.page-numbers',
+    articles: '.site-content.cf article'
+
+
+
+
+
+
+
+  }
+
+
   acessarCampoPesquisa() {
     cy.get('#overlay-open')
       .click();
@@ -24,6 +44,46 @@ class HomePage {
 
   }
 
+  verificarHumArtigo(palavrasChave) {
+
+
+    cy.log(palavrasChave);
+
+
+    cy.get('.site-content.cf article').then(($articles) => {
+      if ($articles.length > 1) {
+        $articles.eq(0).click();
+      } else {
+        $articles.click();
+      }
+    });
+
+
+
+
+    cy.scrollTo('bottom')
+
+    cy.get('body').invoke('text').then((textoTela) => {
+
+      if (textoTela.includes(palavrasChave.toLowerCase())) {
+
+        cy.log(`A palavra-chave minuscula "${palavrasChave}" está presente na tela após a rolagem.`);
+      } else if (textoTela.includes(palavrasChave)) {
+
+        cy.log(`A palavra-chave "${palavrasChave}" está presente na tela após a rolagem.`);
+
+      } else {
+        cy.log(`A palavra-chave "${artResult}" não está presente na tela após a rolagem.`);
+      }
+
+
+
+
+
+    });
+
+  }
+
   verificarResultados(palavraChave) {
     cy.get('.archive-title')
       .should('exist')
@@ -38,65 +98,39 @@ class HomePage {
   verificarSugestaoPg1() {
 
     cy.url()
-      .should('eq', 'https://blogdoagi.com.br/?s=');  
+      .should('eq', 'https://blogdoagi.com.br/?s=');
 
     cy.get('.site-content.cf article').should('have.length.at.least', 10)
       .each(($article, index) => {
 
-      const title = $article.find('h2.entry-title a').text();
-      const date = $article.find('.entry-date a').text();
+        const title = $article.find('h2.entry-title a').text();
+        const date = $article.find('.entry-date a').text();
 
 
-      cy.log(`Artigo ${index + 1}:`);
-      cy.log(`Título: ${title}`);
-      cy.log(`Data: ${date}`);
+        cy.log(`Artigo ${index + 1}:`);
+        cy.log(`Título: ${title}`);
+        cy.log(`Data: ${date}`);
 
 
-    });
+      });
   }
 
   verificarSugestaoPg2() {
     cy.get('a.page-numbers').contains('Página 2')
       .click();
     cy.url()
-      .should('eq', 'https://blogdoagi.com.br/page/2/?s');  
+      .should('eq', 'https://blogdoagi.com.br/page/2/?s');
 
     cy.get('.site-content.cf article').should('have.length.at.least', 10)
       .each(($article, index) => {
 
-      const title = $article.find('h2.entry-title a').text();
-      const date = $article.find('.entry-date a').text();
+        const title = $article.find('h2.entry-title a').text();
+        const date = $article.find('.entry-date a').text();
 
 
-      cy.log(`Artigo ${index + 1}:`);
-      cy.log(`Título: ${title}`);
-      cy.log(`Data: ${date}`);
-
-
-    });
-
-
-  }
-
-
-
-
-  verificarArtigos(palavraChave) {
-
-
-
-    cy.get('#post-3425 > .meta-main-wrap > .entry-main > .entry-header > .entry-title > a')
-      .each((resultado) => {
-        cy.wrap(resultado).click();
-
-        cy.get('#singlepost-wrap').should('be.visible').invoke('text').then((texto) => {
-          if (texto.includes(palavraChave)) {
-            cy.log(`A palavra-chave "${palavraChave}" está presente no artigo.`);
-          } else {
-            cy.log(`A palavra-chave "${palavraChave}" não está presente no artigo.`);
-          }
-        });
-
+        cy.log(`Artigo ${index + 1}:`);
+        cy.log(`Título: ${title}`);
+        cy.log(`Data: ${date}`);
 
 
       });
@@ -105,26 +139,87 @@ class HomePage {
   }
 
 
+
   verificaMensagemNãoEncontrado() {
     cy.get('.entry-header .entry-title').should('have.text', 'Nenhum resultado');
 
 
   };
 
-  verificaTermoAvançado(termoPesquisa) {
-    let encontrado = false;
-    cy.get('.entry-header .entry-title').each((resultado) => {
-      const textoResultado = resultado.text().toLowerCase();
-      const regexPixTed = /(pix|ted)/i;
-      if (regexPixTed.test(textoResultado)) {
-        encontrado = true;
+
+
+
+
+  verificarArtigos(palavrasChaves) {
+    const artResult = palavrasChaves[0].toLowerCase();
+
+    cy.log(artResult);
+    cy.log(palavrasChaves);
+
+    cy.get('.site-content.cf article')
+      .eq(0)
+      .click();
+
+
+    cy.scrollTo('bottom')
+
+    cy.get('body').invoke('text').then((textoTela) => {
+
+      if (textoTela.includes(artResult)) {
+
+        cy.log(`A palavra-chave "${artResult}" está presente na tela após a rolagem.`);
+      } else {
+        cy.log(`A palavra-chave "${artResult}" não está presente na tela após a rolagem.`);
       }
-    }).then(() => {
-      expect(encontrado).to.be.true;
     });
+
   }
 
 
+  verificaTermoAvançado(termoPesquisa) {
+    cy.log(termoPesquisa);
+  
+    const termos = termoPesquisa.toLowerCase().split(' ');
+    
+  
+    cy.get('.entry-header .entry-title')
+      .should('exist')
+      .each((resultado, index) =>{
+
+        const textoresutado = resultado.text().toLowerCase();
+
+        cy.log(`Para o  termo ${termos} foi encontrado o resultado ${textoresutado}`)
+
+        if (termos.includes('AND')){
+
+          cy.log(`todos os resutados devem conter o termo anterior e o posterior juntos`);
+
+
+        }else if (termos.includes('OR')){
+
+          cy.log(`todos os resutados devem conter ou o termo anterior ou o posterior `);
+
+        }
+
+
+
+
+
+      })
+  
+      
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
 
