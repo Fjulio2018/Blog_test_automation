@@ -39,7 +39,7 @@ Funcionalidade: Validação do campo de Busca
     Então  vejo os resultados relacionados a "Tecnologia IR Pix"
 
 
-    // Cenário separado para validação do PIO
+    // Cenário separado para validação do PIO.
 
   Cenário: Validação de pesquisa com termos de pesquisa avançada
     Dado que estou na página inicial
