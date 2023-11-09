@@ -3,41 +3,36 @@ class HomePage {
 
   ELEMENTS = {
 
-
     menu: '#overlay-open',
     search: '.mobile-search > .search-form > label > .search-field',
     searchField: '.archive-title',
     searchValue: 'h1.archive-title>span',
     urlBasic: 'https://blogdoagi.com.br/',
     paginatioNumber: 'a.page-numbers',
-    articles: '.site-content.cf article'
-
-
-
-
-
+    articles: '.site-content.cf article',
+    titulo: '.entry-header .entry-title'
 
 
   }
 
 
   acessarCampoPesquisa() {
-    cy.get('#overlay-open')
+    cy.get(this.ELEMENTS.menu)
       .click();
-    cy.get('.mobile-search > .search-form > label > .search-field')
+    cy.get(this.ELEMENTS.search)
       .click()
 
   }
 
   realizarPesquisa(palavraChave) {
-    cy.get('.mobile-search > .search-form > label > .search-field')
+    cy.get(this.ELEMENTS.search)
       .type(palavraChave).should('have.value', palavraChave)
       .type('{enter}');
 
   }
 
   realizaPesquisavazia() {
-    cy.get('.mobile-search > .search-form > label > .search-field')
+    cy.get(this.ELEMENTS.search)
       .should('exist')
       .type('{enter}');
 
@@ -50,7 +45,7 @@ class HomePage {
     cy.log(palavrasChave);
 
 
-    cy.get('.site-content.cf article').then(($articles) => {
+    cy.get(this.ELEMENTS.articles).then(($articles) => {
       if ($articles.length > 1) {
         $articles.eq(0).click();
       } else {
@@ -85,13 +80,13 @@ class HomePage {
   }
 
   verificarResultados(palavraChave) {
-    cy.get('.archive-title')
+    cy.get(this.ELEMENTS.searchField)
       .should('exist')
       .should('contain', palavraChave);
   }
 
   verificarResultadosvazio() {
-    cy.get('h1.archive-title>span')
+    cy.get(this.ELEMENTS.searchValue)
       .should('be.empty');
   }
 
@@ -100,7 +95,8 @@ class HomePage {
     cy.url()
       .should('eq', 'https://blogdoagi.com.br/?s=');
 
-    cy.get('.site-content.cf article').should('have.length.at.least', 10)
+    cy.get(this.ELEMENTS.articles)
+      .should('have.length.at.least', 10)
       .each(($article, index) => {
 
         const title = $article.find('h2.entry-title a').text();
@@ -116,12 +112,14 @@ class HomePage {
   }
 
   verificarSugestaoPg2() {
-    cy.get('a.page-numbers').contains('Página 2')
+    cy.get(this.ELEMENTS.paginatioNumber)
+      .contains('Página 2')
       .click();
     cy.url()
       .should('eq', 'https://blogdoagi.com.br/page/2/?s');
 
-    cy.get('.site-content.cf article').should('have.length.at.least', 10)
+    cy.get(this.ELEMENTS.articles)
+      .should('have.length.at.least', 10)
       .each(($article, index) => {
 
         const title = $article.find('h2.entry-title a').text();
@@ -141,7 +139,8 @@ class HomePage {
 
 
   verificaMensagemNãoEncontrado() {
-    cy.get('.entry-header .entry-title').should('have.text', 'Nenhum resultado');
+    cy.get(this.ELEMENTS.titulo)
+      .should('have.text', 'Nenhum resultado');
 
 
   };
@@ -156,7 +155,7 @@ class HomePage {
     cy.log(artResult);
     cy.log(palavrasChaves);
 
-    cy.get('.site-content.cf article')
+    cy.get(this.ELEMENTS.articles)
       .eq(0)
       .click();
 
@@ -178,24 +177,24 @@ class HomePage {
 
   verificaTermoAvançado(termoPesquisa) {
     cy.log(termoPesquisa);
-  
+
     const termos = termoPesquisa.toLowerCase().split(' ');
-    
-  
-    cy.get('.entry-header .entry-title')
+
+
+    cy.get(this.ELEMENTS.titulo)
       .should('exist')
-      .each((resultado, index) =>{
+      .each((resultado, index) => {
 
         const textoresutado = resultado.text().toLowerCase();
 
         cy.log(`Para o  termo ${termos} foi encontrado o resultado ${textoresutado}`)
 
-        if (termos.includes('AND')){
+        if (termos.includes('AND')) {
 
           cy.log(`todos os resutados devem conter o termo anterior e o posterior juntos`);
 
 
-        }else if (termos.includes('OR')){
+        } else if (termos.includes('OR')) {
 
           cy.log(`todos os resutados devem conter ou o termo anterior ou o posterior `);
 
@@ -206,20 +205,20 @@ class HomePage {
 
 
       })
-  
-      
+
+
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
 
 
 

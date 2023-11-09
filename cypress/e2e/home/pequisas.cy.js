@@ -71,7 +71,7 @@ describe('Validação do campo de Busca', () => {
   });
 
 
-  it.only('Validação de pesquisa com termos de pesquisa avançada', () => {
+  it('Validação de pesquisa com termos de pesquisa avançada', () => {
     const termoPesquisa = 'TED AND PIX';
 
 
