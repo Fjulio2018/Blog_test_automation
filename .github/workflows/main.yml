@@ -1,0 +1,22 @@
+name: Run Auto Test
+
+on: 
+  pull_request:
+    branches: ["main"]  
+
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest   
+
+    steps:
+      - name: checkout/clone do projeto
+        uses: actions/checkout@v4.1.1
+
+      - name: Run Teste
+        uses: cypress-io/github-action@v6.5.0
+        
+
+      - name: cypress-report
+        uses: duynhanf/cypress-report@v2  
+
