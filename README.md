@@ -20,6 +20,12 @@ Projeto de Automação de UI
     Então  vejo os resultados relacionados a "tecnologia"
     E  verifico os artigos relacionados
 
+Cenário: Pesquisa por palavras-chave não encontrada
+    Dado que estou na página inicial
+    Quando  acesso o campo de pesquisa
+    E  realizo uma pesquisa por "Vini"
+    Então a mensagem "Nenhum resultado" é apresentada
+
   Cenário: Pesquisa com campo vazio
     Dado que estou na página inicial
     Quando eu acesso o campo de pesquisa
